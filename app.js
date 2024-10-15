@@ -2,6 +2,9 @@ import * as THREE from 'https://cdn.skypack.dev/three@0.129.0/build/three.module
 import { GLTFLoader } from 'https://cdn.skypack.dev/three@0.129.0/examples/jsm/loaders/GLTFLoader.js';
 import { gsap } from 'https://cdn.skypack.dev/gsap';
 
+// Import iframe-resizer for child pages
+import iframeResize from 'https://cdn.jsdelivr.net/npm/@iframe-resizer/child/index.js';
+
 const camera = new THREE.PerspectiveCamera(
     10,
     window.innerWidth / window.innerHeight,
@@ -38,7 +41,6 @@ const topLight = new THREE.DirectionalLight(0xffffff, 1);
 topLight.position.set(500, 500, 500);
 scene.add(topLight);
 
-
 const reRender3D = () => {
     requestAnimationFrame(reRender3D);
     renderer.render(scene, camera);
@@ -68,6 +70,7 @@ let arrPositionModel = [
         rotation: { x: 0.3, y: -0.5, z: 0 },
     },
 ];
+
 const modelMove = () => {
     const sections = document.querySelectorAll('.section');
     let currentSection;
@@ -95,16 +98,21 @@ const modelMove = () => {
             z: new_coordinates.rotation.z,
             duration: 3,
             ease: "power1.out"
-        })
+        });
     }
 }
+
 window.addEventListener('scroll', () => {
     if (bee) {
         modelMove();
     }
-})
+});
+
 window.addEventListener('resize', () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
-})
+});
+
+// Initialize iframe-resizer on child side
+iframeResize();  // Initialize the iframe resizer child script to communicate with parent
